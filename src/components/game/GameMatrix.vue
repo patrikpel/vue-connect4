@@ -13,10 +13,10 @@
            class="board-cell"
            :style="{
              gridRow: rowIndex + 1,
-             gridColumn: colIndex + 1
+             gridColumn: colIndex + 1,
+             backgroundColor: Object.values(allPlayers).find(player => player.id == disc.player)?.color
            }"
            @click="gameStore.insertDisc(colIndex)">
-        {{ disc.player }}
       </div>
     </template>
 
@@ -25,9 +25,13 @@
 
 <script setup>
 import { useGameStore } from "stores/game.js";
+import { usePlayersStore } from "stores/players.js";
 import { storeToRefs } from "pinia";
 
+const playersStore = usePlayersStore();
 const gameStore = useGameStore();
+
+const { allPlayers } = storeToRefs(playersStore);
 const { board } = storeToRefs(gameStore);
 </script>
 
