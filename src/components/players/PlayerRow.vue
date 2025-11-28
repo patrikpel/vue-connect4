@@ -1,8 +1,12 @@
 <template>
   <div class="player-container">
-    <span class="player-name">
-      {{player.name}}
-    </span>
+    <div class="player-button-color-wrapper">
+      <div class="colorball" :style="{backgroundColor: player.color}"></div>
+      <span class="player-name">
+        {{player.name}}
+      </span>
+    </div>
+
     <button class="red-btn" @click="playersStore.removePlayer(player.id)">
       Remove player
     </button>
@@ -38,5 +42,16 @@
     flex-direction: row;
     align-items: center;
     padding-left: 5px;
+  }
+  .colorball {
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+  }
+  .player-button-color-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
   }
 </style>
