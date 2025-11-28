@@ -4,13 +4,14 @@
       <RegisterPlayers/>
     </div>
     <div v-else>
-      <!-- TODO TÄHÄN PELILOGIIKKAA -->
+      <GameWrapper/>
     </div>
   </q-page>
 </template>
 
 <script setup>
   import RegisterPlayers from "components/players/RegisterPlayers.vue";
+  import GameWrapper from "components/game/GameWrapper.vue";
   import { useGameStore } from "stores/game.js";
   import { storeToRefs } from 'pinia';
   const gameStore = useGameStore();
