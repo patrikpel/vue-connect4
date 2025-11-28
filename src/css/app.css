@@ -27,3 +27,17 @@
   .red-btn:hover {
     background: #d32f2f;   /* slightly darker on hover */
   }
+
+  .green-btn {
+    background: #43a047;   /* green */
+    color: #fff;           /* white text */
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .green-btn:hover {
+    background: #388e3c;   /* slightly darker on hover */
+  }

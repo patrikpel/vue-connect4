@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-  import { usePlayersStore } from "src/stores/players.js";
+  import { usePlayersStore } from "stores/players.js";
   import { shallowRef } from "vue";
 
   const playersStore = usePlayersStore();
