@@ -23,3 +23,13 @@
 
   const { allPlayers } = storeToRefs(playersStore);
 </script>
+
+<style scoped>
+#playerlist {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+</style>
