@@ -22,7 +22,7 @@ export const usePlayersStore = defineStore('players', {
       }
 
       if(Object.values(this.players).some(player => player.name === name)) {
-        Notify.create("You cannot have two players with the same name");
+        Notify.create({type: "warning", message: "You cannot have two players with the same name"});
         return;
       }
 
@@ -34,10 +34,14 @@ export const usePlayersStore = defineStore('players', {
       };
 
       this.players[id] = player;
+
+      Notify.create({type: "positive", message: "Added player: " + name});
     },
 
     removePlayer(playerId) {
+      const name = Object.values(this.players)?.find(player => player.id === playerId)?.name;
       delete this.players[playerId];
+      Notify.create({message: "Removed player: " + name});
     },
   },
 });
