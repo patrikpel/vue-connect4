@@ -1,4 +1,5 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
+import { Notify } from 'quasar'
 
 export const usePlayersStore = defineStore('players', {
   state: () => ({
@@ -16,6 +17,15 @@ export const usePlayersStore = defineStore('players', {
     },
 
     addPlayer(name) {
+      if(name.trim() == "") {
+        return;
+      }
+
+      if(Object.values(this.players).some(player => player.name === name)) {
+        Notify.create("You cannot have two players with the same name");
+        return;
+      }
+
       const id = this.generateId();
 
       const player = {
