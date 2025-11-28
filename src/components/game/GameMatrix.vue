@@ -15,7 +15,7 @@
              gridRow: rowIndex + 1,
              gridColumn: colIndex + 1
            }"
-           @click="insertDisc(rowIndex, colIndex)">
+           @click="gameStore.insertDisc(colIndex)">
         {{ disc.player }}
       </div>
     </template>
@@ -29,10 +29,6 @@ import { storeToRefs } from "pinia";
 
 const gameStore = useGameStore();
 const { board } = storeToRefs(gameStore);
-
-function insertDisc(row, col) {
-  gameStore.insertDisc(row, col);
-}
 </script>
 
 <style scoped>

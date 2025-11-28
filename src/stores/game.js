@@ -66,11 +66,30 @@ export const useGameStore = defineStore('game', {
       this.currentPlayer = this.players.find(p => p.id !== active.id);
     },
 
-    insertDisc(rowIndex, colIndex) {
-      this.board[rowIndex][colIndex] = {
-        player: this.currentPlayer.id,
-      };
-      this.togglePlayer();
+    insertDisc(colIndex) {
+      // Find the lowest empty cell in the column
+      const lastRowIndex = this.board.length - 1;
+
+      for (let row = lastRowIndex; row >= 0; row--) {
+        if (this.board[row][colIndex].player === null) {
+
+          // Set disc status to this player
+          this.board[row][colIndex] = {
+            player: this.currentPlayer.id,
+          };
+
+          // Toggle player
+          this.togglePlayer();
+
+          return; // Stop the function so only one disc is placed
+        }
+      }
+
+      // Column is full
+      Notify.create({
+        type: "warning",
+        message: "This column is full!"
+      });
     },
   },
 });
