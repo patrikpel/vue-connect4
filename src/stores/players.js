@@ -5,6 +5,7 @@ export const usePlayersStore = defineStore('players', {
   state: () => ({
     players: {},   // playerId → player object
     nextId: 0,
+    availableColors: ['red', 'blue'],
   }),
 
   getters: {
@@ -16,8 +17,17 @@ export const usePlayersStore = defineStore('players', {
       return this.nextId++;
     },
 
+    getColor() {
+      return this.availableColors.shift();
+    },
+
     addPlayer(name) {
       if(name.trim() == "") {
+        return;
+      }
+
+      if(Object.values(this.players).length == 2) {
+        Notify.create({type: "warning", message: "You cannot have more than two players! (right now)"});
         return;
       }
 
@@ -31,6 +41,7 @@ export const usePlayersStore = defineStore('players', {
       const player = {
         id: id,
         name: name,
+        color: this.getColor(),
       };
 
       this.players[id] = player;
