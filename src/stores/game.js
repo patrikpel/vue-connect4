@@ -8,6 +8,7 @@ export const useGameStore = defineStore('game', {
     ongoing: false,
     board: [],
     currentPlayer: null, // current player object
+    gameHasEnded: false, // just for the end screen
   }),
 
   getters: {
@@ -30,7 +31,7 @@ export const useGameStore = defineStore('game', {
       this.players = players;
       this.currentPlayer = players[0];  // first player begins
       this.ongoing = true;
-
+      this.gameHasEnded = false;
       this.board = this.newBoardTemplate();
 
       if (this.board?.length > 0) {
@@ -44,6 +45,14 @@ export const useGameStore = defineStore('game', {
       this.ongoing = false;
       this.currentPlayer = null;
       Notify.create({ message: "Game stopped!" });
+    },
+
+    endGame() {
+      this.gameHasEnded = true;
+      setTimeout(() => {
+        this.gameHasEnded = false;
+        this.stopGame();
+      }, 2000);
     },
 
     newBoardTemplate() {
@@ -67,6 +76,8 @@ export const useGameStore = defineStore('game', {
     },
 
     insertDisc(colIndex) {
+      if(this.gameHasEnded === true) return;
+
       // Find the lowest empty cell in the column
       const lastRowIndex = this.board.length - 1;
 
@@ -77,6 +88,11 @@ export const useGameStore = defineStore('game', {
           this.board[row][colIndex] = {
             player: this.currentPlayer.id,
           };
+
+          if(this.didIWin(row, colIndex, this.currentPlayer.id)) {
+            // We have a winner
+            this.endGame();
+          }
 
           // Toggle player
           this.togglePlayer();
@@ -90,6 +106,44 @@ export const useGameStore = defineStore('game', {
         type: "warning",
         message: "This column is full!"
       });
+    },
+
+    didIWin(row, col, playerId) {
+      const directions = [
+        [0, 1],   // right
+        [1, 0],   // downward
+        [1, 1],   // diagonal downward right
+        [1, -1],  // diagonal downward left
+      ];
+
+      const rows = 6;
+      const cols = 7;
+
+      const countInDirection = (dr, dc) => {
+        let count = 1;
+
+        // Check forward direction
+        let r = row + dr;
+        let c = col + dc;
+        while (r >= 0 && r < rows && c >= 0 && c < cols && this.board[r][c]?.player === playerId) {
+          count++;
+          r += dr;
+          c += dc;
+        }
+
+        // Check backward direction
+        r = row - dr;
+        c = col - dc;
+        while (r >= 0 && r < rows && c >= 0 && c < cols && this.board[r][c]?.player === playerId) {
+          count++;
+          r -= dr;
+          c -= dc;
+        }
+
+        return count >= 4;
+      };
+
+      return directions.some(([dr, dc]) => countInDirection(dr, dc));
     },
   },
 });
