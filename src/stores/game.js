@@ -5,6 +5,8 @@ export const useGameStore = defineStore('game', {
   state: () => ({
     players: [],   // player ids
     ongoing: false, // is game ongoing?
+    board: [],
+    currentPlayer: 0, // current player id
   }),
 
   getters: {
@@ -21,12 +23,26 @@ export const useGameStore = defineStore('game', {
 
       this.ongoing = true;
       this.players = playerIds;
-      Notify.create({type: "positive", message: "Game started!"});
+      this.board = this.newBoardTemplate();
+      if(this.board?.length > 0) {
+        Notify.create({type: "positive", message: "Game started!"});
+      } else {
+        Notify.create({type: "negative", message: "Game failed to start."});
+      }
     },
     stopGame() {
       this.ongoing = false;
       Notify.create({message: "Game stopped!"});
     },
+    newBoardTemplate() {
+      const rows = 6;
+      const cols = 7;
+
+      return Array.from({ length: rows }, () => Array(cols).fill(this.getEmptyCell()));
+    },
+    getEmptyCell() {
+      return 'empty';
+    }
   },
 });
 
