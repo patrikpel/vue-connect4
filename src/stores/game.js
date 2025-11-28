@@ -41,7 +41,9 @@ export const useGameStore = defineStore('game', {
       return Array.from({ length: rows }, () => Array(cols).fill(this.getEmptyCell()));
     },
     getEmptyCell() {
-      return 'empty';
+      return {
+        player: null,
+      };
     }
   },
 });
