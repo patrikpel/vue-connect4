@@ -44,7 +44,15 @@ export const useGameStore = defineStore('game', {
       return {
         player: null,
       };
-    }
+    },
+    togglePlayer() {
+      const activePlayer = this.currentPlayer;
+      this.currentPlayer = this.players.find(player => player != activePlayer)
+    },
+    insertDisc(rowIndex, colIndex) {
+      this.board[rowIndex][colIndex] = this.currentPlayer;
+      this.togglePlayer();
+    },
   },
 });
 
