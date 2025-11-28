@@ -1,5 +1,5 @@
 <template>
-  <button class="red-btn" @click="gameStore.stopGame()">
+  <button class="red-btn" @click="gameStore.stopGame()" style="width: fit-content;">
     Stop Game
   </button>
 </template>
