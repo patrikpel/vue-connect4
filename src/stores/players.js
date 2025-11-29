@@ -5,7 +5,12 @@ export const usePlayersStore = defineStore('players', {
   state: () => ({
     players: {},   // playerId → player object
     nextId: 0,
-    availableColors: ['red', 'blue', 'green', 'orange'],
+    availableColors: [
+      "#0096D6", /* bright ocean blue */
+      "#E600E6", /* electric magenta */
+      "#E6B800", /* warm gold */
+      "#00B86C", /* vivid emerald green */
+    ],
   }),
 
   getters: {
