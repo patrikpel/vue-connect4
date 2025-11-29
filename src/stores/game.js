@@ -130,8 +130,8 @@ export const useGameStore = defineStore('game', {
         [1, -1],  // diagonal downward left
       ];
 
-      const rows = 6;
-      const cols = 7;
+      const rows = this.board.length;
+      const cols = this.board[0].length;
 
       const countInDirection = (dr, dc) => {
         let count = 1;
