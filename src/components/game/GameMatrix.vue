@@ -1,4 +1,5 @@
 <template>
+  <h3 v-if="currentPlayer" style="font-size: 24px">Active player: {{ currentPlayer.name }}</h3>
   <div class="board-grid"
        :style="{
          gridTemplateRows: `repeat(${board.length}, 1fr)`,
@@ -6,7 +7,6 @@
          width: '300px',
          height: '300px',
        }">
-
 
     <template v-for="(row, rowIndex) in board" :key="'row-' + rowIndex">
       <div v-for="(disc, colIndex) in row"
@@ -38,7 +38,7 @@ const playersStore = usePlayersStore();
 const gameStore = useGameStore();
 
 const { allPlayers } = storeToRefs(playersStore);
-const { board } = storeToRefs(gameStore);
+const { board, currentPlayer } = storeToRefs(gameStore);
 
 const hoveredColumn = ref(null); // track which column is hovered
 </script>
