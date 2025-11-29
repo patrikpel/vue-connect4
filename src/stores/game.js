@@ -23,18 +23,17 @@ export const useGameStore = defineStore('game', {
       // Convert players object → array of player objects
       const players = Object.values(playersStore.players);
 
-      if (players.length < 2) {
-        Notify.create({ type: "warning", message: "You need two players to play the game!" });
-        return;
-      }
-
       this.players = players;
       this.currentPlayer = players[0];  // first player begins
-      this.ongoing = true;
       this.gameHasEnded = false;
-      this.board = this.newBoardTemplate();
+
+      let gridSize = this.getGridSize(players.length);
+      if(gridSize !== undefined) {
+        this.board = this.newBoardTemplate(gridSize);
+      }
 
       if (this.board?.length > 0) {
+        this.ongoing = true;
         Notify.create({ type: "positive", message: "Game started!" });
       } else {
         Notify.create({ type: "negative", message: "Game failed to start." });
@@ -55,13 +54,27 @@ export const useGameStore = defineStore('game', {
       }, 2000);
     },
 
-    newBoardTemplate() {
-      const rows = 6;
-      const cols = 7;
-
-      return Array.from({ length: rows }, () =>
-        Array(cols).fill(this.getEmptyCell())
+    newBoardTemplate(size) {
+      console.log(size);
+      return Array.from({ length: size.rows }, () =>
+        Array(size.cols).fill(this.getEmptyCell())
       );
+    },
+
+    getGridSize(playerAmount) {
+      switch(playerAmount) {
+        case 2:
+          return { rows: 6, cols: 7 }
+        case 3:
+          return { rows: 6, cols: 8 };
+        case 4:
+          return { rows: 7, cols: 8 };
+        default:
+          Notify.create({
+            type: "warning",
+            message: "Invalid number of players!"
+          });
+      }
     },
 
     getEmptyCell() {
@@ -71,8 +84,9 @@ export const useGameStore = defineStore('game', {
     },
 
     togglePlayer() {
-      const active = this.currentPlayer;
-      this.currentPlayer = this.players.find(p => p.id !== active.id);
+      const currentIndex = this.players.findIndex(p => p.id === this.currentPlayer.id);
+      const nextIndex = (currentIndex + 1) % this.players.length;
+      this.currentPlayer = this.players[nextIndex];
     },
 
     insertDisc(colIndex) {

@@ -5,7 +5,7 @@ export const usePlayersStore = defineStore('players', {
   state: () => ({
     players: {},   // playerId → player object
     nextId: 0,
-    availableColors: ['red', 'blue'],
+    availableColors: ['red', 'blue', 'green', 'orange'],
   }),
 
   getters: {
@@ -26,11 +26,6 @@ export const usePlayersStore = defineStore('players', {
         return;
       }
 
-      if(Object.values(this.players).length == 2) {
-        Notify.create({type: "warning", message: "You cannot have more than two players! (right now)"});
-        return;
-      }
-
       if(Object.values(this.players).some(player => player.name === name)) {
         Notify.create({type: "warning", message: "You cannot have two players with the same name"});
         return;
@@ -38,10 +33,18 @@ export const usePlayersStore = defineStore('players', {
 
       const id = this.generateId();
 
+      let playerColor = this.getColor();
+
+      // If there are no colors left for this player => player limit has been reached
+      if(playerColor === undefined) {
+        Notify.create({type: "warning", message: "You have reached the player limit"});
+        return;
+      }
+
       const player = {
         id: id,
         name: name,
-        color: this.getColor(),
+        color: playerColor,
       };
 
       this.players[id] = player;
@@ -50,9 +53,10 @@ export const usePlayersStore = defineStore('players', {
     },
 
     removePlayer(playerId) {
-      const name = Object.values(this.players)?.find(player => player.id === playerId)?.name;
+      const player = Object.values(this.players)?.find(player => player.id === playerId);
+      this.availableColors.push(player.color);
       delete this.players[playerId];
-      Notify.create({message: "Removed player: " + name});
+      Notify.create({message: "Removed player: " + player?.name});
     },
   },
 });
