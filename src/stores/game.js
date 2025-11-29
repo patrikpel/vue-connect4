@@ -55,7 +55,6 @@ export const useGameStore = defineStore('game', {
     },
 
     newBoardTemplate(size) {
-      console.log(size);
       return Array.from({ length: size.rows }, () =>
         Array(size.cols).fill(this.getEmptyCell())
       );
