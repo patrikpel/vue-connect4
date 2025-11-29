@@ -106,6 +106,7 @@ export const useGameStore = defineStore('game', {
           if(this.didIWin(row, colIndex, this.currentPlayer.id)) {
             // We have a winner
             this.endGame();
+            return;
           }
 
           // Toggle player
