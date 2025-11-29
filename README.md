@@ -1,6 +1,6 @@
 # vue-connect4-app (vue-connect4)
 
-An app for playing Connect 4 with 2 players on a single device
+An app for playing Connect 4 with 2-4 players on a single device
 
 ## Install the dependencies
 
