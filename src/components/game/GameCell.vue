@@ -56,10 +56,33 @@
 .board-cell {
   width: 30px;
   height: 30px;
-  border: 1px solid black;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  border: 1px solid #000000;
+  overflow: hidden;
+
+  /* Base shine-like depth */
+  box-shadow:
+    inset 0 3px 6px rgba(255,255,255,0.45),   /* inner top highlight */
+    inset 0 -3px 6px rgba(0,0,0,0.35),        /* inner bottom shadow */
+    0 4px 8px rgba(0,0,0,0.25);               /* external drop shadow */
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
+
+/* ---- SHINY REFLECTION LAYER ---- */
+.board-cell::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 70%;
+  height: 40%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35); /* glossy top reflection */
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+
 </style>
